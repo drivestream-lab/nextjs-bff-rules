@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+# Forms (client)
+
+- **Current pattern:** controlled inputs with `useState`, submit via **`authFetch`** or relative `fetch` to `/api/...`, errors in local state (or query error UI). This is acceptable and should stay consistent within a feature until migrated.
+- If introducing **React Hook Form + Zod**, adopt **one** pattern repo-wide and document the reference form in `docs/project-guidance/`; do not mix uncontrolled RHF and ad hoc controlled forms in the same flow without a deliberate migration.
+
+Product flow conventions (table → row → edit): `docs/project-guidance/crud-and-listing.md`.

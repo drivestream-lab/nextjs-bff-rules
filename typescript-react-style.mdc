@@ -1,0 +1,11 @@
+---
+description: Strict TypeScript, functional components and hooks, minimal API response typing — no class components, avoid any.
+alwaysApply: true
+---
+
+# TypeScript and React
+
+- Enable **strict** TypeScript; prefer **`interface`** for object shapes.
+- Avoid **`any`**; use **`unknown`** and narrow at boundaries.
+- For BFF/upstream responses, define **minimal** interfaces or narrow assertions where the contract is known—do not over-model entire upstream schemas unless maintained intentionally.
+- **Functional components** and hooks only; no class components.

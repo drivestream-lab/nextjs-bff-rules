@@ -1,0 +1,56 @@
+---
+description: Prevent hardcoded strings in UI components and API responses — use i18n system instead.
+globs: ["app/**/*.tsx", "components/**/*.tsx", "app/api/**/*.ts"]
+alwaysApply: true
+---
+
+# No Hardcoded UI Strings
+
+All user-facing text must use the i18n translation system. Hardcoded strings are not allowed in components or API responses.
+
+## Correct usage
+
+```typescript
+import { useTranslation } from "@/lib/i18n";
+
+export function MyComponent() {
+  const { t } = useTranslation("organizations");
+  return <h1>{t("list.title")}</h1>;
+}
+
+import { t } from "@/lib/i18n";
+
+export async function POST(request: NextRequest) {
+  if (!isValid) {
+    return NextResponse.json(
+      { error: t("auth.errors.invalidRequest") },
+      { status: 400 }
+    );
+  }
+}
+```
+
+## Forbidden
+
+- Hardcoded labels, titles, button text, table headers in JSX
+- Hardcoded user-facing error messages in components or BFF JSON responses
+
+## Translation keys
+
+- `namespace.section.element`
+- `namespace.actions.verb`
+- `namespace.errors.type`
+
+Locale files: `data/locales/en/*.json`. Namespace inventory for this portal: `docs/specification/product/05-frontend-architecture.md`.
+
+## Exceptions (allowed hardcoded)
+
+- Debug logs, `NODE_ENV` guards
+- Same-origin API paths: `"/api/<resource>"`
+- CSS classes, HTML attributes, MIME types
+
+## Error messages
+
+```typescript
+if (!res.ok) throw new Error(t("organizations.errors.loadFailed"));
+```

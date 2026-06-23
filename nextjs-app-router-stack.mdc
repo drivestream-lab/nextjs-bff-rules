@@ -1,0 +1,14 @@
+---
+description: Stack for this app — Next.js App Router, React, TypeScript, Tailwind v4, TanStack Query; do not suggest alternate frameworks unless asked.
+alwaysApply: true
+---
+
+# Application stack
+
+- **Framework:** Next.js (App Router), React, TypeScript.
+- **Styling:** Tailwind CSS v4; tokens from `app/globals.css` (and shared design CSS where linked).
+- **UI primitives:** shadcn-style components under `components/ui` (Button, Input, Label, Card); Radix where already used.
+- **Server state on the client:** TanStack Query for data loaded from this app’s **same-origin** `/api/*` routes.
+- **Upstream APIs:** Browser code must **not** call upstream services directly; use the Next.js BFF (Route Handlers). See `nextjs-bff-server-auth.mdc`.
+
+Do not propose replacing this stack (e.g. different framework or global client-side GraphQL) unless the user explicitly asks.

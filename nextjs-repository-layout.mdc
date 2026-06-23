@@ -1,0 +1,61 @@
+---
+description: Where routes, BFF handlers, components, and lib utilities live — single deployable Next.js BFF app.
+alwaysApply: true
+---
+
+# Repository layout
+
+- **`app/`** — App Router pages, route groups (e.g. `(auth)`, `(dashboard)`), `layout.tsx`, `providers.tsx`, `globals.css`, and **`app/api/**`** Route Handlers (BFF).
+- **`components/`** — `ui/*` shared primitives; feature folders per product area.
+- **`lib/`** — `auth.ts`, `auth-fetch.ts`, `env.ts`, `bff.ts`, `constants.ts`, `logging.ts`, `utils.ts`.
+
+## BFF route organization
+
+Organize **`app/api/**`** by **upstream service module name**, not by UI feature.
+
+### Correct
+
+```text
+app/api/
+├── auth/                    # Portal session (this app)
+└── <upstream-service>/      # One folder per upstream microservice
+    └── <resource>/
+        └── route.ts
+```
+
+Use the **canonical upstream service name** from `product/00-service-profile.md` and `product/02-route-map.md`.
+
+### Wrong
+
+```text
+app/api/
+├── tenants/       # Ambiguous — which upstream owns this?
+├── devices/
+└── users/
+```
+
+**Rationale:** Clear ownership, service-specific error handling, aligns with backend team boundaries.
+
+## UI route organization
+
+Organize **`app/(dashboard)/**`** by **user workflows**, not by upstream service.
+
+```text
+app/(dashboard)/
+├── platform/           # Platform-wide operations
+├── organizations/      # Cross-tenant admin flows
+└── organization/       # Single-tenant context
+```
+
+## Conventions
+
+- **New BFF route:** `app/api/<upstream-service>/<resource>/route.ts`
+- **New UI screen:** under `app/` in the appropriate route group
+- **Do not** add a separate backend in this repo — one Next.js application
+
+## Configuration
+
+- **Static config** (`.env`): upstream base URLs, cookie names, log levels
+- **Dynamic config** (API): tenant settings, feature flags — prefer API over env for business variation
+
+Portal UX patterns: `docs/project-guidance/` (see `documentation-project-guidance.mdc`).

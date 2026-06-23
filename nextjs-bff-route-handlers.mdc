@@ -1,0 +1,60 @@
+---
+description: BFF route handlers — logging, auth forwarding, error shaping, upstream fetch.
+globs: app/api/**/*.ts
+alwaysApply: false
+---
+
+# BFF Route Handlers (`app/api/**/route.ts`)
+
+- Read session on the **server**; forward **`Authorization`** only from server to upstream APIs.
+- Use shared helpers (`lib/bff.ts`, `lib/upstream-fetch.ts`) for base URLs, headers, and instrumentation.
+- Shape upstream JSON minimally; do not leak internal-only fields.
+- Map upstream errors to stable client status codes and JSON bodies per app convention.
+- List endpoints: use **`@/lib/constants`** for `skip`/`limit` defaults and caps.
+
+## Logging (mandatory)
+
+One Pino root per Node process (`lib/logging.ts` + `instrumentation.ts`). Each route uses a **child** logger with correlation and user context.
+
+```typescript
+import { createApiLogger } from "@/lib/logging";
+import { getSessionToken, decodeJwtPayload } from "@/lib/auth";
+
+export async function GET(request: NextRequest) {
+  const token = await getSessionToken();
+  const payload = token ? decodeJwtPayload(token) : null;
+  const logger = createApiLogger(
+    request.method,
+    request.url,
+    request.headers.get("x-correlation-id") || undefined,
+    {
+      userId: payload?.sub as string,
+      tenantId: payload?.tenant_id as string,
+    }
+  );
+
+  logger.info("API request started");
+  try {
+    // ... route logic ...
+    logger.info("API request completed", { status: res.status });
+    return response;
+  } catch (error) {
+    logger.error("API request failed", {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    throw error;
+  }
+}
+```
+
+## Module naming
+
+Use pattern `<upstream-service>-<resource>-api` for log module names (e.g. `identity-tenants-api`). Match names to `product/02-route-map.md` — do not hardcode product codenames in rules; use the upstream name from product spec.
+
+## Environment flags
+
+See `.env.example` and `product/06-logging.md`. Typical flags:
+
+- `LOG_LEVEL`, `LOG_PRETTY`, `LOG_REQUESTS`, `LOG_UPSTREAM_CALLS`, `LOG_API_INBOUND`
+
+Do not expose raw upstream URLs or secrets in responses or production logs.

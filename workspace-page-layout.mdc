@@ -1,0 +1,17 @@
+---
+description: Workspace shell — WorkspacePage, headers, card granularity, i18n chrome.
+alwaysApply: true
+---
+
+# Workspace page layout
+
+- **Layout spec:** `docs/project-guidance/workspace-layout.md` — platform and tenant patterns for this portal.
+- **Components:** `components/workspace/` — `WorkspacePageHeader`, `WorkspacePage`.
+- **Catalog/list pages:** inline `nav` + `header` + body per project guidance reference implementation.
+- **Nested hub/task pages:** `WorkspacePage` + `WorkspacePageHeader`.
+- **Card granularity:** one primary `Card` per detail/edit task; subsections via headings inside the Card.
+- **Navigation:** one “Back to parent” on task pages; sibling shortcuts on hub pages, not every child.
+- **Copy:** user-visible chrome via `useTranslation` / `data/locales/en/*.json` (`no-hardcoded-strings.mdc`).
+- **Wizards:** multi-step flows use `components/wizard/*`; do not use wizard chrome for simple lists.
+
+Concrete path examples for this repo: `docs/project-guidance/workspace-layout.md` and `product/02-route-map.md`.

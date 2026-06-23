@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+# Pagination, limits, intervals
+
+- Do **not** hardcode `limit`, `pageSize`, batch sizes, or polling intervals in Route Handlers or components.
+- Import from **`@/lib/constants`** (or `lib/constants.ts`). Extend that file when adding new list or batch features.
+- Existing names in this repo include patterns such as `*_PAGE_SIZE_*`, `*_LIMIT`, `*_BATCH_SIZE`, `PAGE_SIZE_OPTIONS`, `PAGE_SIZE_DEFAULT`, and refetch intervals for health/dashboard widgets. Follow the same naming style for new constants.

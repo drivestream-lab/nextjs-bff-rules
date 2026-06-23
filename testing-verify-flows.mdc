@@ -1,0 +1,45 @@
+---
+description: Unit vs live verify ownership — Vitest, Playwright/BFF smoke, no-overlap policy.
+alwaysApply: true
+---
+
+# Testing and verify flows
+
+## Two layers
+
+| Layer | Location | Needs live stack? | Owns |
+|-------|----------|-------------------|------|
+| **Unit** | `tests/unit/` | No | Pure functions, auth helpers, BFF shaping, role checks, i18n keys |
+| **Live verify** | `tests/verify/` | Yes | Full BFF + UI journeys, cookie session, upstream integration |
+
+**SSOT for ownership:** `tests/README.md` feature map — must match `as-built/implementation-status.md` verification rows.
+
+## Unit tests (Vitest)
+
+- Home: **`tests/unit/`** only
+- Mock upstream `fetch`; do not start Next.js server for business-logic tests
+- Prefer testing `lib/*` helpers, error mappers, pagination, role gates
+
+## Live verify
+
+- Playwright, scripted HTTP against `next dev`, or documented manual smoke with reproducible steps
+- May call real upstream when stack is up — document env in `tests/README.md`
+- One verify path per feature; trim or add scripts when feature map changes
+
+## No-overlap policy
+
+- **Do not** duplicate a full HTTP journey in Vitest if live verify already covers it
+- **Do** unit-test branching logic, parsers, and edge cases extracted from route handlers
+- Verify module headers should cite which unit tests own shared logic
+
+## Closure (qualitative)
+
+No numeric quotas on test count. Closure = feature map complete, as-built agrees, every in-scope capability has unit and/or live verify proof.
+
+## CI
+
+```bash
+npm run lint && npm run test && npm run build
+```
+
+Live verify is optional in CI when documented as manual/board **Verify command**; prefer scripted verify when feasible.

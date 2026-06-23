@@ -1,0 +1,38 @@
+---
+description: BFF-only upstream calls, server-held secrets and session, httpOnly cookies, authFetch for client /api calls — no tokens in the browser for upstream APIs.
+alwaysApply: true
+---
+
+# BFF and authentication
+
+## Server only
+
+- Upstream base URLs and credentials live **only** on the server (`lib/env.ts` or equivalent). Do not add `NEXT_PUBLIC_*` URLs for privileged upstream APIs.
+- Session: prefer **httpOnly** cookie set by Route Handlers after server-side login; the client must not read or store upstream JWTs in `localStorage`.
+
+## Client → this app
+
+- Use **relative** URLs: `fetch("/api/...")` or TanStack Query calling those paths only.
+- Use **`authFetch`** (`lib/auth-fetch.ts`) for authenticated requests so **401** can redirect to login. **Exception:** login/tenant-login pages (no session yet) may use plain `fetch` for `POST /api/auth/*`.
+
+**Correct:**
+
+```ts
+await authFetch("/api/example");
+useQuery({ queryKey: ["x"], queryFn: () => authFetch("/api/x").then((r) => r.json()) });
+```
+
+**Wrong:**
+
+```ts
+fetch("/api/x"); // missing authFetch — no 401 handling
+fetch(`${process.env.NEXT_PUBLIC_UPSTREAM}/v1/...`, { headers: { Authorization: `Bearer ${token}` } });
+```
+
+## Protected UI routes
+
+- Guard authenticated areas in **layout** (or server) using session/cookie helpers (e.g. `getSessionToken()`); do not rely on client-only guards as the only protection.
+
+## Sensitive upstream APIs
+
+- Admin or privileged upstream routes should be called **only** from Route Handlers, not from client bundles.

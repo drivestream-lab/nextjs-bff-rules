@@ -1,0 +1,19 @@
+---
+description: Use existing CSS variables and Tailwind token classes; reuse components/ui before new primitives; no ad hoc hex for core surfaces.
+globs: "**/*.tsx"
+alwaysApply: true
+---
+
+# UI tokens and primitives
+
+- Use design tokens already defined (e.g. `--background`, `--foreground`, `--primary`, `--accent`, `--surface`, `--muted`) and Tailwind classes wired to them (`bg-background`, `text-foreground`, etc.).
+- Do **not** introduce new raw hex/HSL for core layout surfaces unless extending the token system in `globals.css` / design CSS with team alignment.
+- Prefer **`components/ui`** before adding new low-level primitives. Common section pattern: `Card` + `CardHeader` + `CardTitle` + `CardContent`.
+
+Portal **branding** (logos, ops-specific shell): `docs/project-guidance/branding.md` and `docs/ui-guidance.md`.
+
+## Wizard and status chrome
+
+- Wizard UI (`components/wizard/*`) should use **semantic tokens only**: `accent` / `accent-secondary` (primary emphasis), `success` (completed / positive), `warning`, `destructive`, `muted`, `surface`, `border`. Those map to CSS variables in `app/globals.css` (source mirror: `design/globals-base.css`).
+- Do **not** use default palette utilities for wizard state (`bg-green-500`, `text-blue-600`, etc.). If a new state color is needed, add a variable in `globals.css` and wire it through `@theme inline`, then use the corresponding `bg-*` / `text-*` class.
+- Avoid `prose` for help bodies unless `@tailwindcss/typography` is configured to use the same tokens; prefer explicit `text-foreground` + link utilities (`text-accent`, underline) so links and type stay on-brand.

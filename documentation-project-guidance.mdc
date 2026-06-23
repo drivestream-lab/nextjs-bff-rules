@@ -1,0 +1,24 @@
+---
+description: Project-specific UX and portal branding under docs/project-guidance; technical specs under docs/specification.
+alwaysApply: true
+---
+
+# Project guidance vs specification
+
+## Project guidance (portal UX)
+
+- **CRUD flows, branding, workspace layout, copy patterns:** `docs/project-guidance/`
+- Start with `docs/project-guidance/README.md`, then the relevant file (`crud-and-listing.md`, `branding.md`, `workspace-layout.md`).
+
+## Specification (SDD)
+
+- **Capabilities, routes, flows, as-built, ADRs:** `docs/specification/`
+- Index: `docs/specification/README.md`
+
+## Rules vs docs
+
+- **`.cursor/rules/*.mdc`:** stack + BFF architecture (platform, portable).
+- **`docs/project-guidance/`:** how *this* portal presents itself to users.
+- **`docs/specification/product/`:** what the portal does and which routes exist.
+
+Do not put stack constraints in project-guidance. Do not put portal-specific CRUD guidance in generic rule files.
