@@ -1,29 +1,131 @@
-# nextjs-bff-rules — bootstrap
+# nextjs-bff-rules
 
-Platform constitution for **DriveStream Next.js BFF portals**. Copy this tree into `autrio10x/nextjs-bff-rules`, tag **`v0.1.0`**, then register in `scripts/config/harness-autrio10x.yaml`.
+Shared **Cursor agent rules** (`.mdc`) for DriveStream **Next.js BFF portals**. Rules describe **how to code** (App Router, BFF auth, layout, i18n, SDD) — not product requirements or upstream service catalogs.
 
-**Consumers:** `drivestream-ops` (pilot), future Next.js BFF repos (`profile: frontend`).
+**Version:** see [`VERSION`](VERSION) (currently **0.1.1**) · [CHANGELOG](CHANGELOG.md)
 
-**Boundary:** No upstream service names (Abhilekh, Parichay, …). Product-specific routes and trackers live in each app's `docs/specification/product/` and `AGENTS.md` appendix.
+---
 
-**Onboard:** [playbook/frontend-harness-onboarding.md](../../playbook/frontend-harness-onboarding.md)
+## Layout
 
-## Files
+This repository root **is** the contents of a consumer's **`.cursor/rules/`** directory. Every `.mdc` file at the root is loaded by Cursor when the repo is mounted as a submodule:
 
-| File | alwaysApply / globs |
-|------|---------------------|
-| `spec-driven-development.mdc` | always |
-| `testing-verify-flows.mdc` | always |
-| `nextjs-app-router-stack.mdc` | always |
-| `nextjs-bff-server-auth.mdc` | always |
-| `nextjs-repository-layout.mdc` | always |
-| `nextjs-bff-route-handlers.mdc` | `app/api/**/*.ts` |
-| `typescript-react-style.mdc` | always |
-| `client-forms-patterns.mdc` | `components/**/*.tsx` |
-| `tailwind-design-tokens.mdc` | `**/*.tsx` |
-| `shared-limits-pagination.mdc` | always |
-| `no-hardcoded-strings.mdc` | always |
-| `workspace-page-layout.mdc` | always |
-| `documentation-project-guidance.mdc` | always |
+```
+nextjs-bff-rules/          # mounted as .cursor/rules/ in portal repos
+  VERSION
+  README.md
+  CHANGELOG.md
+  code-guidelines-index.mdc
+  spec-driven-development.mdc
+  testing-verify-flows.mdc
+  nextjs-app-router-stack.mdc
+  nextjs-bff-server-auth.mdc
+  nextjs-bff-route-handlers.mdc
+  nextjs-repository-layout.mdc
+  typescript-react-style.mdc
+  client-forms-patterns.mdc
+  tailwind-design-tokens.mdc
+  shared-limits-pagination.mdc
+  no-hardcoded-strings.mdc
+  workspace-page-layout.mdc
+  documentation-project-guidance.mdc
+```
 
-Mount at `.cursor/rules/` via harness `sync-harness`.
+---
+
+## Consumer: first-time setup
+
+Prefer the DriveStream factory when available:
+
+```bash
+# From drivestream-meta (consumer cloned adjacent to meta)
+./scripts/meta sync-harness --repo drivestream-ops --apply
+./scripts/meta verify-harness --repo drivestream-ops
+```
+
+### Manual submodule (without factory)
+
+Run from the **consumer portal repo root** (e.g. `drivestream-ops/`):
+
+```bash
+rm -rf .cursor/rules
+
+git submodule add https://github.com/autrio10x/nextjs-bff-rules.git .cursor/rules
+cd .cursor/rules && git checkout v0.1.1 && cd ../..
+
+git add .gitmodules .cursor/rules
+git commit -m "Add shared Next.js BFF Cursor rules at .cursor/rules (v0.1.1)"
+```
+
+Add **`AGENTS.md`** at the consumer root — use drivestream-meta `templates/AGENTS.frontend.md` or run `sync-harness`.
+
+---
+
+## Consumer: bump rules version
+
+```bash
+cd .cursor/rules
+git fetch --tags
+git checkout v0.1.1    # replace with target version
+cd ../..
+git add .cursor/rules
+git commit -m "Bump shared Cursor rules to v0.1.1"
+```
+
+**Before bumping**, read the [CHANGELOG](CHANGELOG.md). Breaking releases require consumer changes before or alongside the bump.
+
+Update **`.harness-pin.yaml`** `rules.ref` when using the harness pin record.
+
+---
+
+## Release process (platform team)
+
+1. Branch `rules/short-description` — edit `*.mdc` at repo root
+2. Bump **`VERSION`** (semver) and add **`CHANGELOG.md`** section (Breaking vs Additive + migration)
+3. Update version in this **README** header
+4. Commit, tag, push:
+
+```bash
+git tag v0.1.1
+git push origin main
+git push origin v0.1.1
+```
+
+5. Bump harness config in [drivestream-meta](https://github.com/autrio10x/drivestream-meta) `scripts/config/harness-autrio10x.yaml` and notify consumer teams
+
+---
+
+## Governance
+
+- **Platform team** owns this repo. Portal teams **do not** edit `.cursor/rules/` in product repos.
+- Propose rule changes via PR here. Consumers only update the submodule pointer.
+- **Product-specific** upstream maps, route trees, and INIT specs belong in **`docs/specification/product/`** — not here.
+
+---
+
+## What stays in each portal repo
+
+| Location | Purpose |
+|----------|---------|
+| `docs/specification/product/` | Capabilities, `02-route-map.md`, INIT slices |
+| `docs/specification/adr/` | Architecture decision records |
+| `docs/specification/as-built/` | Live vs deferred; verification matrix |
+| `docs/project-guidance/` | Portal UX, CRUD, branding |
+| `AGENTS.md` | Agent router; playbook and verify commands |
+| `tests/README.md` | Vitest vs live verify feature map |
+
+---
+
+## Rule index
+
+See [`code-guidelines-index.mdc`](code-guidelines-index.mdc) for the full module table.
+
+---
+
+## Reference consumer
+
+| Portal | Profile |
+|--------|---------|
+| [drivestream-ops](https://github.com/autrio10x/drivestream-ops) | `frontend` — management portal BFF |
+
+Onboarding runbook: [drivestream-meta/playbook/frontend-harness-onboarding.md](https://github.com/autrio10x/drivestream-meta/blob/develop/playbook/frontend-harness-onboarding.md)
