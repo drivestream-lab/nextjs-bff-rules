@@ -1,51 +1,77 @@
 # nextjs-bff-rules
 
-Shared **Cursor agent rules** (`.mdc`) for DriveStream **Next.js BFF portals**. Rules describe **how to code** (App Router, BFF auth, layout, i18n, SDD) — not product requirements or upstream service catalogs.
+**Open constitution for Next.js BFF portals** — shared Cursor agent rules (`.mdc`) for App Router backends-for-frontend: server auth, route handlers, layout, i18n, and spec-driven delivery.
 
-**Version:** see [`VERSION`](VERSION) (currently **0.1.1**) · [CHANGELOG](CHANGELOG.md)
+Rules describe **how to code** the portal layer. They do **not** contain upstream service catalogs, product route trees, or INIT requirements — those belong in each consumer repo under `docs/specification/`.
+
+| | |
+|---|---|
+| **License** | [MIT](LICENSE) |
+| **Version** | see [`VERSION`](VERSION) (currently **0.1.1**) · [CHANGELOG](CHANGELOG.md) |
+| **Harness profile** | `frontend` |
+| **Mount path** | `.cursor/rules/` (git submodule) |
+| **Pairs with** | [launchpad](https://github.com/drivestream-lab/launchpad) · [prayog-skills](https://github.com/drivestream-lab/prayog-skills) |
+
+---
+
+## Role in the harness stack
+
+```text
+.harness-pin.yaml  (profile: frontend)
+        │
+        ├── rules  ──►  nextjs-bff-rules  →  .cursor/rules/*.mdc
+        └── agent_skills  ──►  prayog-skills  →  .agents/skills/ (seeded)
+```
+
+[Launchpad](https://github.com/drivestream-lab/launchpad) `sync-harness-app` writes the pin, syncs this submodule, and seeds the frontend skill bundle. See [harness pins](https://github.com/drivestream-lab/launchpad/blob/main/playbook/harness-pins.md).
 
 ---
 
 ## Layout
 
-This repository root **is** the contents of a consumer's **`.cursor/rules/`** directory. Every `.mdc` file at the root is loaded by Cursor when the repo is mounted as a submodule:
+This repository root **is** the contents of a consumer's `.cursor/rules/` directory:
 
-```
-nextjs-bff-rules/          # mounted as .cursor/rules/ in portal repos
+```text
+nextjs-bff-rules/
   VERSION
   README.md
   CHANGELOG.md
   code-guidelines-index.mdc
-  spec-driven-development.mdc
-  testing-verify-flows.mdc
   nextjs-app-router-stack.mdc
   nextjs-bff-server-auth.mdc
   nextjs-bff-route-handlers.mdc
   nextjs-repository-layout.mdc
   typescript-react-style.mdc
-  client-forms-patterns.mdc
   tailwind-design-tokens.mdc
-  shared-limits-pagination.mdc
-  no-hardcoded-strings.mdc
+  client-forms-patterns.mdc
   workspace-page-layout.mdc
+  no-hardcoded-strings.mdc
+  shared-limits-pagination.mdc
+  spec-driven-development.mdc
+  testing-verify-flows.mdc
   documentation-project-guidance.mdc
 ```
 
+Full module table: [`code-guidelines-index.mdc`](code-guidelines-index.mdc).
+
 ---
 
-## Consumer: first-time setup
+## Adoption
 
-Prefer the DriveStream factory when available:
+### With Launchpad (recommended)
+
+From your tenant meta workspace:
 
 ```bash
-# From drivestream-meta (consumer cloned adjacent to meta)
-./scripts/meta sync-harness --repo drivestream-ops --apply
-./scripts/meta verify-harness --repo drivestream-ops
+launchpad sync-harness-app --repo <portal-repo> --apply
+launchpad verify-harness-app --repo <portal-repo>
 ```
 
-### Manual submodule (without factory)
+Tenant harness config (`config/harness-<org>.yaml`) documents approved `rules.ref` + `agent_skills.ref` pairs.
 
-Run from the **consumer portal repo root** (e.g. `drivestream-ops/`):
+### Manual submodule
+
+From the **consumer portal repo root**:
 
 ```bash
 rm -rf .cursor/rules
@@ -54,78 +80,86 @@ git submodule add https://github.com/drivestream-lab/nextjs-bff-rules.git .curso
 cd .cursor/rules && git checkout v0.1.1 && cd ../..
 
 git add .gitmodules .cursor/rules
-git commit -m "Add shared Next.js BFF Cursor rules at .cursor/rules (v0.1.1)"
+git commit -m "Add Next.js BFF Cursor rules at .cursor/rules (v0.1.1)"
 ```
 
-Add **`AGENTS.md`** at the consumer root — use drivestream-meta `templates/AGENTS.frontend.md` or run `sync-harness`.
+Add **`AGENTS.md`** at the consumer root — copy from your tenant `templates/AGENTS.frontend.md` or run harness sync.
 
 ---
 
-## Consumer: bump rules version
+## Bump rules version
 
 ```bash
 cd .cursor/rules
 git fetch --tags
-git checkout v0.1.1    # replace with target version
+git checkout v0.1.1    # target version
 cd ../..
-git add .cursor/rules
-git commit -m "Bump shared Cursor rules to v0.1.1"
+git add .cursor/rules .harness-pin.yaml
+git commit -m "Bump Next.js BFF rules to v0.1.1"
 ```
 
-**Before bumping**, read the [CHANGELOG](CHANGELOG.md). Breaking releases require consumer changes before or alongside the bump.
-
-Update **`.harness-pin.yaml`** `rules.ref` when using the harness pin record.
-
----
-
-## Release process (platform team)
-
-1. Branch `rules/short-description` — edit `*.mdc` at repo root
-2. Bump **`VERSION`** (semver) and add **`CHANGELOG.md`** section (Breaking vs Additive + migration)
-3. Update version in this **README** header
-4. Commit, tag, push:
-
-```bash
-git tag v0.1.1
-git push origin main
-git push origin v0.1.1
-```
-
-5. Bump harness config in [drivestream-meta](https://github.com/autrio10x/drivestream-meta) `scripts/config/harness-autrio10x.yaml` and notify consumer teams
+Read [CHANGELOG](CHANGELOG.md) before every bump. Update `.harness-pin.yaml` `rules.ref` when using the harness pin record.
 
 ---
 
 ## Governance
 
-- **Platform team** owns this repo. Portal teams **do not** edit `.cursor/rules/` in product repos.
-- Propose rule changes via PR here. Consumers only update the submodule pointer.
-- **Product-specific** upstream maps, route trees, and INIT specs belong in **`docs/specification/product/`** — not here.
+| Principle | Detail |
+|-----------|--------|
+| **Ownership** | Platform team owns this repo |
+| **Consumers** | Pin a release tag — never edit `.cursor/rules/` in product repos |
+| **Changes** | Propose via PR here; consumers update the submodule pointer only |
+| **Product truth** | Route maps, upstream contracts, branding → `docs/specification/` and `docs/project-guidance/` |
 
 ---
 
 ## What stays in each portal repo
 
-| Location | Purpose |
-|----------|---------|
-| `docs/specification/product/` | Capabilities, `02-route-map.md`, INIT slices |
-| `docs/specification/adr/` | Architecture decision records |
+| Path | Purpose |
+|------|---------|
+| `docs/specification/product/` | Capabilities, route maps, INIT slices |
+| `docs/specification/adr/` | Architecture decisions |
 | `docs/specification/as-built/` | Live vs deferred; verification matrix |
-| `docs/project-guidance/` | Portal UX, CRUD, branding |
+| `docs/project-guidance/` | Portal UX, CRUD patterns, branding |
 | `AGENTS.md` | Agent router; playbook and verify commands |
 | `tests/README.md` | Vitest vs live verify feature map |
 
 ---
 
-## Rule index
+## Release process (maintainers)
 
-See [`code-guidelines-index.mdc`](code-guidelines-index.mdc) for the full module table.
+1. Branch `rules/<short-description>` — edit `*.mdc` at repo root
+2. Bump **`VERSION`** (semver) and **`CHANGELOG.md`** (Breaking vs Additive + migration)
+3. Update version in this README header
+4. PR → `develop` → `main`; tag and push:
+
+```bash
+git tag v0.1.1
+git push origin v0.1.1
+```
+
+5. Bump harness config in tenant `config/harness-<org>.yaml`; notify portal teams
 
 ---
 
-## Reference consumer
+## Reference profile
 
-| Portal | Profile |
-|--------|---------|
-| [drivestream-ops](https://github.com/autrio10x/drivestream-ops) | `frontend` — management portal BFF |
+Typical consumer: a **management or operations portal** BFF (`profile: frontend`) that proxies authenticated calls to internal APIs. Your org's meta repo documents onboarding runbooks and approved harness pairs.
 
-Onboarding runbook: [drivestream-meta/playbook/frontend-harness-onboarding.md](https://github.com/autrio10x/drivestream-meta/blob/develop/playbook/frontend-harness-onboarding.md)
+---
+
+## Related repositories
+
+| Repo | Role |
+|------|------|
+| [python-services-rules](https://github.com/drivestream-lab/python-services-rules) | Constitution for Python APIs your BFF calls |
+| [prayog-skills](https://github.com/drivestream-lab/prayog-skills) | SDD agent workflows (`profiles/frontend.yaml`) |
+| [launchpad](https://github.com/drivestream-lab/launchpad) | Factory CLI and harness sync |
+
+> **Note:** `nextjs-bff-foundation` (cookiecutter scaffold for new portals) is planned; use harness sync + your portal skeleton until it ships.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
