@@ -50,7 +50,7 @@ Run from the **consumer portal repo root** (e.g. `drivestream-ops/`):
 ```bash
 rm -rf .cursor/rules
 
-git submodule add https://github.com/autrio10x/nextjs-bff-rules.git .cursor/rules
+git submodule add https://github.com/drivestream-lab/nextjs-bff-rules.git .cursor/rules
 cd .cursor/rules && git checkout v0.1.1 && cd ../..
 
 git add .gitmodules .cursor/rules
