@@ -49,5 +49,5 @@ Each portal repo should provide (not in this package):
 ## Cross-project conventions
 
 - **Do not** add upstream service names (Abhilekh, Parichay, …) to shared **`.mdc`** files — use **`product/00-service-profile.md`** and **`product/02-route-map.md`** in the consumer repo.
-- **Do not** edit **`.cursor/rules/`** in consumer repos — propose changes via PR on [nextjs-bff-rules](https://github.com/autrio10x/nextjs-bff-rules).
+- **Do not** edit **`.cursor/rules/`** in consumer repos — propose changes via PR on [nextjs-bff-rules](https://github.com/drivestream-lab/nextjs-bff-rules).
 - **Harness:** consumer pin in **`.harness-pin.yaml`** (`profile: frontend`); factory sync via drivestream-meta `./scripts/meta sync-harness`.
