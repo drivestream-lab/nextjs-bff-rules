@@ -6,6 +6,24 @@ Format: **Breaking** changes require code changes in consumer repos before or al
 
 ---
 
+## v0.1.3
+
+### Summary
+
+Point harness sync documentation at the public launchpad CLI instead of a tenant-specific wrapper script.
+
+### Changes
+
+- **`code-guidelines-index.mdc`** — `launchpad sync-harness-app` + harness-pins link (replaces `drivestream-meta ./scripts/meta sync-harness`)
+
+### Migration guide
+
+- Bump consumer submodule: `cd .cursor/rules && git fetch --tags && git checkout v0.1.3`
+- Update `.harness-pin.yaml` rules ref if pinned explicitly
+- No application code changes required
+
+---
+
 ## v0.1.2
 
 ### Summary

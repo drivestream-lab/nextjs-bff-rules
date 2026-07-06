@@ -7,7 +7,7 @@ Rules describe **how to code** the portal layer. They do **not** contain upstrea
 | | |
 |---|---|
 | **License** | [MIT](LICENSE) |
-| **Version** | see [`VERSION`](VERSION) (currently **0.1.1**) · [CHANGELOG](CHANGELOG.md) |
+| **Version** | see [`VERSION`](VERSION) (currently **0.1.3**) · [CHANGELOG](CHANGELOG.md) |
 | **Harness profile** | `frontend` |
 | **Mount path** | `.cursor/rules/` (git submodule) |
 | **Pairs with** | [launchpad](https://github.com/drivestream-lab/launchpad) · [prayog-skills](https://github.com/drivestream-lab/prayog-skills) |
