@@ -39,6 +39,7 @@ When code changes, update together:
 - **Do not** add initiative blocks to `AGENTS.md` — board **Spec path** points to `product/INIT-*.md`
 - Product INITs use the normal PRD pipeline; harness onboarding does not
 
-## Skills (dev bundle)
+## Agent workflows
 
-`/spec-feasibility-review`, `/spec-implementation-plan`, `/pre-implement`, `/verify` — installed under `.agents/skills/` via harness sync.
+Procedural slash commands are installed under `.agents/skills/` (prayog dev bundle via harness sync).
+**Which** skills apply and **when** to use them: read `AGENTS.md` and `.harness-pin.yaml` — not this constitution.
