@@ -41,4 +41,4 @@ When code changes, update together:
 
 ## Skills (dev bundle)
 
-`/spec-feasibility-review`, `/spec-implementation-plan`, `/pre-implement`, `/verify` — installed under `.agents/skills/` via harness sync.
+`/spec-draft`, `/initiative-feasibility`, `/spec-technical-review`, `/spec-implementation-plan`, `/pre-implement`, `/loop-spec`, `/ground-spec`, `/verify` — installed under `.agents/skills/` via harness sync.
