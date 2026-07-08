@@ -7,7 +7,7 @@ alwaysApply: true
 
 - **`app/`** — App Router pages, route groups (e.g. `(auth)`, `(dashboard)`), `layout.tsx`, `providers.tsx`, `globals.css`, and **`app/api/**`** Route Handlers (BFF).
 - **`components/`** — `ui/*` shared primitives; feature folders per product area.
-- **`lib/`** — `auth.ts`, `auth-fetch.ts`, `env.ts`, `bff.ts`, `constants.ts`, `logging.ts`, `utils.ts`.
+- **`lib/`** — `auth.ts`, `auth-fetch.ts`, `bff.ts`, `bff-logging.ts`, `constants.ts`, `env.ts`, `i18n.ts`, `jwt.ts`, `logging.ts`, `upstream-fetch.ts`, `utils.ts`.
 
 ## BFF route organization
 

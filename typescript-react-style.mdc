@@ -1,5 +1,5 @@
 ---
-description: Strict TypeScript, functional components and hooks, minimal API response typing — no class components, avoid any.
+description: Strict TypeScript, functional components and hooks, "use client" placement, minimal API response typing — no class components, avoid any.
 alwaysApply: true
 ---
 
@@ -7,5 +7,12 @@ alwaysApply: true
 
 - Enable **strict** TypeScript; prefer **`interface`** for object shapes.
 - Avoid **`any`**; use **`unknown`** and narrow at boundaries.
-- For BFF/upstream responses, define **minimal** interfaces or narrow assertions where the contract is known—do not over-model entire upstream schemas unless maintained intentionally.
+- For BFF/upstream responses, define **minimal** interfaces or narrow assertions where the contract is known — do not over-model entire upstream schemas unless maintained intentionally.
 - **Functional components** and hooks only; no class components.
+
+## `"use client"` placement
+
+- Server Components are the **default** in App Router. Do not add `"use client"` unless the component needs browser APIs, event handlers, `useState`, `useEffect`, or TanStack Query hooks.
+- Add `"use client"` at **leaf nodes** — the lowest component in the tree that actually needs client interactivity.
+- **Never** mark a layout, a data-fetching wrapper, or a route segment as `"use client"` — this collapses the entire subtree into a client bundle and loses RSC benefits.
+- If only a small part of a component needs interactivity, extract that part into a separate client component rather than marking the whole parent.

@@ -1,5 +1,5 @@
 ---
-description: Stack for this app — Next.js App Router, React, TypeScript, Tailwind v4, TanStack Query; do not suggest alternate frameworks unless asked.
+description: Stack for this app — Next.js App Router, React, TypeScript, Tailwind v4, TanStack Query, RSC vs client data fetching; do not suggest alternate frameworks unless asked.
 alwaysApply: true
 ---
 
@@ -8,7 +8,8 @@ alwaysApply: true
 - **Framework:** Next.js (App Router), React, TypeScript.
 - **Styling:** Tailwind CSS v4; tokens from `app/globals.css` (and shared design CSS where linked).
 - **UI primitives:** shadcn-style components under `components/ui` (Button, Input, Label, Card); Radix where already used.
-- **Server state on the client:** TanStack Query for data loaded from this app’s **same-origin** `/api/*` routes.
+- **Server state on the client:** TanStack Query for data loaded from this app's **same-origin** `/api/*` routes.
+- **Server Components (RSC):** may call `lib/fetch-*.ts` helpers directly when data is needed for SSR and no client interactivity follows from the same data. Do not mix RSC direct fetch and TanStack Query for the same data in the same feature — pick one per data flow.
 - **Upstream APIs:** Browser code must **not** call upstream services directly; use the Next.js BFF (Route Handlers). See `nextjs-bff-server-auth.mdc`.
 
 Do not propose replacing this stack (e.g. different framework or global client-side GraphQL) unless the user explicitly asks.

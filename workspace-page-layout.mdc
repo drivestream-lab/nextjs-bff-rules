@@ -1,17 +1,17 @@
 ---
-description: Workspace shell — WorkspacePage, headers, card granularity, i18n chrome.
+description: Authenticated page shell — header slot, content slot, card granularity, i18n chrome.
 alwaysApply: true
 ---
 
-# Workspace page layout
+# Page layout (authenticated shell)
 
-- **Layout spec:** `docs/project-guidance/workspace-layout.md` — platform and tenant patterns for this portal.
-- **Components:** `components/workspace/` — `WorkspacePageHeader`, `WorkspacePage`.
+- **Layout spec:** `docs/project-guidance/workspace-layout.md` — patterns for this portal's authenticated shell.
+- **Shell structure:** every authenticated page has a **header slot** (title, breadcrumb, primary actions) and a **content slot**. The component names are the portal's choice — name them to match the portal's domain vocabulary.
 - **Catalog/list pages:** inline `nav` + `header` + body per project guidance reference implementation.
-- **Nested hub/task pages:** `WorkspacePage` + `WorkspacePageHeader`.
+- **Nested detail/task pages:** use the shell wrapper + header component defined in `docs/project-guidance/workspace-layout.md`.
 - **Card granularity:** one primary `Card` per detail/edit task; subsections via headings inside the Card.
-- **Navigation:** one “Back to parent” on task pages; sibling shortcuts on hub pages, not every child.
-- **Copy:** user-visible chrome via `useTranslation` / `data/locales/en/*.json` (`no-hardcoded-strings.mdc`).
-- **Wizards:** multi-step flows use `components/wizard/*`; do not use wizard chrome for simple lists.
+- **Navigation:** one "Back to parent" on task pages; sibling shortcuts on hub pages, not every child.
+- **Copy:** all user-visible chrome via `useTranslation` / `data/locales/en/*.json` (`no-hardcoded-strings.mdc`).
+- **Wizards:** multi-step flows use a dedicated wizard component tree; do not use wizard chrome for simple lists.
 
-Concrete path examples for this repo: `docs/project-guidance/workspace-layout.md` and `product/02-route-map.md`.
+Concrete path examples: `docs/project-guidance/workspace-layout.md` and `product/02-route-map.md`.
