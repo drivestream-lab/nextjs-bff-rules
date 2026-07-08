@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Code guideline modules (index)
 
-These **`.mdc`** files govern **architectural patterns** for DriveStream Next.js BFF portals. They live in the **`nextjs-bff-rules`** repository and are consumed via a **git submodule** at each portal repo's **`.cursor/rules/`** (this directory when mounted).
+These **`.mdc`** files govern **architectural patterns** for Next.js BFF portals. They live in the **`nextjs-bff-rules`** repository and are consumed via a **git submodule** at each portal repo's **`.cursor/rules/`** (this directory when mounted).
 
 **Product-specific** requirements, upstream service maps, route catalogs, ADRs, and feature trackers belong in each portal repo under **`docs/specification/`**, **`docs/project-guidance/`**, and **README** — not in this package.
 
@@ -13,23 +13,23 @@ These **`.mdc`** files govern **architectural patterns** for DriveStream Next.js
 
 | File | Topic |
 |------|--------|
-| **`spec-driven-development.mdc`** | SDD truth hierarchy, same-PR discipline, PR traceability |
+| **`spec-driven-development.mdc`** | SDD truth hierarchy, same-PR discipline |
 | **`testing-verify-flows.mdc`** | Vitest unit vs live verify; feature map; no-overlap policy |
 
 ## Stack and BFF rules (this package)
 
 | File | Topic |
 |------|--------|
-| **`nextjs-app-router-stack.mdc`** | Next.js App Router, React, TypeScript, Tailwind, TanStack Query |
+| **`nextjs-app-router-stack.mdc`** | Next.js App Router, React, TypeScript, Tailwind, TanStack Query, RSC vs client |
 | **`nextjs-bff-server-auth.mdc`** | httpOnly session, `authFetch`, server-only upstream |
 | **`nextjs-bff-route-handlers.mdc`** | `app/api/**/route.ts` — logging, errors, upstream fetch |
 | **`nextjs-repository-layout.mdc`** | `app/`, `components/`, `lib/`; BFF by upstream service |
-| **`typescript-react-style.mdc`** | Strict TS, functional components, hooks |
+| **`typescript-react-style.mdc`** | Strict TS, functional components, hooks, `"use client"` placement |
 | **`client-forms-patterns.mdc`** | Client forms, TanStack Query mutations |
 | **`tailwind-design-tokens.mdc`** | CSS variables, `components/ui` primitives |
 | **`shared-limits-pagination.mdc`** | Pagination and limits via `@/lib/constants` |
 | **`no-hardcoded-strings.mdc`** | i18n — `data/locales/en/` |
-| **`workspace-page-layout.mdc`** | `WorkspacePage` / header shell |
+| **`workspace-page-layout.mdc`** | Authenticated page shell — header slot, content slot |
 | **`documentation-project-guidance.mdc`** | `docs/project-guidance/` vs `docs/specification/` |
 
 ## Per-repository product documentation
@@ -42,12 +42,10 @@ Each portal repo should provide (not in this package):
 | **`docs/specification/adr/`** | Architecture decision records |
 | **`docs/specification/as-built/`** | Live vs deferred; verification matrix |
 | **`docs/project-guidance/`** | Portal UX, CRUD patterns, branding |
-| **`AGENTS.md`** | Agent router — rules boundary, verify commands |
 | **`tests/README.md`** | Unit vs verify feature map |
-| **`README.md`** | Setup, env vars, pinned **`nextjs-bff-rules`** version |
+| **`README.md`** | Setup, env vars |
 
 ## Cross-project conventions
 
-- **Do not** add upstream service names (Abhilekh, Parichay, …) to shared **`.mdc`** files — use **`product/00-service-profile.md`** and **`product/02-route-map.md`** in the consumer repo.
-- **Do not** edit **`.cursor/rules/`** in consumer repos — propose changes via PR on [nextjs-bff-rules](https://github.com/drivestream-lab/nextjs-bff-rules).
-- **Harness:** consumer pin in **`.harness-pin.yaml`** (`profile: frontend`); from tenant meta run `launchpad sync-harness-app --repo <portal-repo> --apply` (see [harness pins](https://github.com/drivestream-lab/launchpad/blob/main/playbook/harness-pins.md)).
+- **Do not** add upstream service names to shared **`.mdc`** files — use **`product/00-service-profile.md`** and **`product/02-route-map.md`** in the consumer repo.
+- **Do not** edit **`.cursor/rules/`** in consumer repos — propose changes via PR on the upstream `nextjs-bff-rules` repository.

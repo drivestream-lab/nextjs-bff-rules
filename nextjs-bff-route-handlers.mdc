@@ -9,51 +9,62 @@ alwaysApply: false
 - Read session on the **server**; forward **`Authorization`** only from server to upstream APIs.
 - Use shared helpers (`lib/bff.ts`, `lib/upstream-fetch.ts`) for base URLs, headers, and instrumentation.
 - Shape upstream JSON minimally; do not leak internal-only fields.
-- Map upstream errors to stable client status codes and JSON bodies per app convention.
+- Map upstream errors to stable client status codes using `mapUpstreamStatus` from `lib/bff.ts`.
 - List endpoints: use **`@/lib/constants`** for `skip`/`limit` defaults and caps.
+
+## Error responses (mandatory)
+
+All BFF error responses must use **`bffError(status, i18nKey)`** from `lib/bff.ts`. The JSON shape is always `{ error: string }`. Do not return ad-hoc error shapes — `authFetch` and client error handlers depend on this contract.
+
+```typescript
+import { bffError, mapUpstreamStatus } from "@/lib/bff";
+
+if (!token) return bffError(401, "auth.errors.sessionExpired");
+if (!res.ok) return bffError(mapUpstreamStatus(res.status), "common.errors.upstreamUnavailable");
+```
 
 ## Logging (mandatory)
 
-One Pino root per Node process (`lib/logging.ts` + `instrumentation.ts`). Each route uses a **child** logger with correlation and user context.
+One Pino root per Node process (`lib/logging.ts` + `instrumentation.ts`). Each route uses a **child** logger created with `createApiLogger`, then the three lifecycle functions from `lib/bff-logging.ts`.
 
 ```typescript
 import { createApiLogger } from "@/lib/logging";
+import { logRequestStart, logRequestSuccess, logRequestError } from "@/lib/bff-logging";
 import { getSessionToken, decodeJwtPayload } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   const token = await getSessionToken();
-  const payload = token ? decodeJwtPayload(token) : null;
+  if (!token) return bffError(401, "auth.errors.sessionExpired");
+  const payload = decodeJwtPayload(token);
+
   const logger = createApiLogger(
     request.method,
     request.url,
-    request.headers.get("x-correlation-id") || undefined,
-    {
-      userId: payload?.sub as string,
-      tenantId: payload?.tenant_id as string,
-    }
+    request.headers.get("x-correlation-id") ?? undefined,
+    { userId: payload?.sub as string },
   );
 
-  logger.info("API request started");
+  const startTime = logRequestStart(logger);
   try {
     // ... route logic ...
-    logger.info("API request completed", { status: res.status });
+    logRequestSuccess(logger, startTime, 200);
     return response;
   } catch (error) {
-    logger.error("API request failed", {
-      error: error instanceof Error ? error.message : String(error),
-    });
-    throw error;
+    logRequestError(logger, startTime, error, 502);
+    return bffError(502, "common.errors.upstreamUnavailable");
   }
 }
 ```
 
+**Never** `throw error` from a route handler — always return a shaped `bffError` response.
+
 ## Module naming
 
-Use pattern `<upstream-service>-<resource>-api` for log module names (e.g. `identity-tenants-api`). Match names to `product/02-route-map.md` — do not hardcode product codenames in rules; use the upstream name from product spec.
+Use pattern `<upstream-service>-<resource>-api` for log module names (e.g. `identity-tenants-api`). Match names to `product/02-route-map.md`.
 
 ## Environment flags
 
-See `.env.example` and `product/06-logging.md`. Typical flags:
+See `.env.example`. Typical flags:
 
 - `LOG_LEVEL`, `LOG_PRETTY`, `LOG_REQUESTS`, `LOG_UPSTREAM_CALLS`, `LOG_API_INBOUND`
 
