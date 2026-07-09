@@ -6,6 +6,26 @@ Format: **Breaking** changes require code changes in consumer repos before or al
 
 ---
 
+## v0.1.5
+
+### Summary
+
+Spec-tree parity with python-services-rules — folder-level as-built, no numbered product filenames in constitution, CI as requirements not scripts.
+
+### Changes
+
+- **`spec-driven-development.mdc`** — as-built row is `docs/specification/as-built/`; BFF pointers use `product/` folder not fixed filenames
+- **`testing-verify-flows.mdc`** — feature map aligns with `as-built/`; CI states required gates, not `npm run` script block
+- **`code-guidelines-index.mdc`**, **`nextjs-repository-layout.mdc`**, **`nextjs-bff-route-handlers.mdc`**, **`workspace-page-layout.mdc`**, **`no-hardcoded-strings.mdc`** — upstream/route/i18n pointers use `docs/specification/product/` not `00-` / `02-` filenames
+- **`client-forms-patterns.mdc`** — add missing `description` frontmatter
+
+### Migration guide
+
+- Bump consumer submodule: `cd .cursor/rules && git fetch --tags && git checkout v0.1.5`
+- No application code changes required
+
+---
+
 ## v0.1.3
 
 ### Summary

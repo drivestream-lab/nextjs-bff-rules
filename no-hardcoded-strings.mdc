@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 - `namespace.actions.verb`
 - `namespace.errors.type`
 
-Locale files: `data/locales/en/*.json`. Namespace inventory for this portal: `docs/specification/product/05-frontend-architecture.md`.
+Locale files: `data/locales/en/*.json`. Namespace inventory for this portal: **`docs/specification/product/`** (frontend architecture doc when present).
 
 ## Exceptions (allowed hardcoded)
 
