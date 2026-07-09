@@ -23,7 +23,7 @@ app/api/
         └── route.ts
 ```
 
-Use the **canonical upstream service name** from `product/00-service-profile.md` and `product/02-route-map.md`.
+Use the **upstream service name** from **`docs/specification/product/`** (service profile and route map docs for this portal).
 
 ### Wrong
 

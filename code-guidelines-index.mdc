@@ -38,7 +38,7 @@ Each portal repo should provide (not in this package):
 
 | Path | Purpose |
 |------|---------|
-| **`docs/specification/product/`** | Capabilities, `02-route-map.md`, initiative specs |
+| **`docs/specification/product/`** | Capabilities, route maps, initiative specs |
 | **`docs/specification/adr/`** | Architecture decision records |
 | **`docs/specification/as-built/`** | Live vs deferred; verification matrix |
 | **`docs/project-guidance/`** | Portal UX, CRUD patterns, branding |
@@ -47,5 +47,5 @@ Each portal repo should provide (not in this package):
 
 ## Cross-project conventions
 
-- **Do not** add upstream service names to shared **`.mdc`** files — use **`product/00-service-profile.md`** and **`product/02-route-map.md`** in the consumer repo.
+- **Do not** add upstream service names to shared **`.mdc`** files — document them in **`docs/specification/product/`** in the consumer repo.
 - **Do not** edit **`.cursor/rules/`** in consumer repos — propose changes via PR on the upstream `nextjs-bff-rules` repository.
