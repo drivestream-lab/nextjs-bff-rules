@@ -6,6 +6,23 @@ Format: **Breaking** changes require code changes in consumer repos before or al
 
 ---
 
+## v0.1.6
+
+### Summary
+
+De-org README — constitution-focused adoption docs without harness stack bleed.
+
+### Changes
+
+- **`README.md`** — remove harness profile, launchpad/prayog stack section, `.harness-pin.yaml` bump steps, `AGENTS.md` row, tenant harness config refs; use `<org>` in submodule commands; point to `nextjs-bff-foundation` scaffold
+
+### Migration guide
+
+- Optional submodule bump: `git checkout v0.1.6` in `.cursor/rules`
+- No application code changes required
+
+---
+
 ## v0.1.5
 
 ### Summary
