@@ -14,4 +14,4 @@ alwaysApply: true
 - **Copy:** all user-visible chrome via `useTranslation` / `data/locales/en/*.json` (`no-hardcoded-strings.mdc`).
 - **Wizards:** multi-step flows use a dedicated wizard component tree; do not use wizard chrome for simple lists.
 
-Concrete path examples: `docs/project-guidance/workspace-layout.md` and `product/02-route-map.md`.
+Concrete examples: `docs/project-guidance/workspace-layout.md` and the route map in **`docs/specification/product/`**.

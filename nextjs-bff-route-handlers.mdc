@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 
 ## Module naming
 
-Use pattern `<upstream-service>-<resource>-api` for log module names (e.g. `identity-tenants-api`). Match names to `product/02-route-map.md`.
+Use pattern `<upstream-service>-<resource>-api` for log module names (e.g. `identity-tenants-api`). Match names to the portal route map in **`docs/specification/product/`**.
 
 ## Environment flags
 

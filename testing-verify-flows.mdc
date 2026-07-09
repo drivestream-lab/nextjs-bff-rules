@@ -12,7 +12,7 @@ alwaysApply: true
 | **Unit** | `tests/unit/` | No | Pure functions, auth helpers, BFF shaping, role checks, i18n keys |
 | **Live verify** | `tests/verify/` | Yes | Full BFF + UI journeys, cookie session, upstream integration |
 
-**SSOT for ownership:** `tests/README.md` feature map — must match `as-built/implementation-status.md` verification rows.
+**SSOT for ownership:** `tests/README.md` feature map — must match **`docs/specification/as-built/`** verification rows.
 
 ## Unit tests (Vitest)
 
@@ -38,8 +38,6 @@ No numeric quotas on test count. Closure = feature map complete, as-built agrees
 
 ## CI
 
-```bash
-npm run lint && npm run types && npm run format:check && npm run test && npm run build
-```
+CI must run **lint**, **types**, **format check**, **unit tests**, and **production build** before merge. Exact script names live in the consumer repo `package.json` — not in this constitution.
 
 Live verify is optional in CI when documented as manual/board **Verify command**; prefer scripted verify when feasible.
