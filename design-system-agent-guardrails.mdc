@@ -1,0 +1,51 @@
+---
+description: UI composition guardrails — compose existing primitives, semantic tokens only, no Figma-paste code, keep product docs in sync.
+globs: "**/*.{tsx,jsx,css}"
+alwaysApply: true
+---
+
+# Design system agent guardrails
+
+Applies to **UI work** in Next.js BFF portals that consume this constitution. Product-specific contracts, pattern IDs, and route catalogs live in the **consumer repo** under `docs/specification/` and `docs/project-guidance/` — not in this package.
+
+Complements **`tailwind-design-tokens.mdc`** (token/primitives) and **`workspace-page-layout.mdc`** (authenticated shell).
+
+## Composition
+
+- Build screens by **composing** existing primitives and domain components. Prefer **`components/ui/*`** and established pattern wrappers before inventing new low-level controls.
+- Do **not** introduce a new shared primitive in `components/ui` unless the consumer’s design-system change-control docs (ADR / project-guidance) allow it in the **same PR**.
+- Follow the authenticated **page shell** contract in `docs/project-guidance/workspace-layout.md` (header slot + content slot). See **`workspace-page-layout.mdc`**.
+- When the consumer maintains a **UI pattern catalog**, cite the pattern id for the screen (or mark deferred in the route map). Do not invent undocumented patterns for production routes.
+- User-visible copy via i18n (`data/locales/…`) — **`no-hardcoded-strings.mdc`**.
+
+## Tokens and styling
+
+- Use **semantic** token classes wired to CSS variables (`bg-background`, `text-foreground`, `border-border`, status semantics, etc.). See **`tailwind-design-tokens.mdc`**.
+- **Forbidden in feature/UI components:** arbitrary color utilities such as `bg-[#…]`, `text-[#…]`, and default palette state colors (`bg-green-500`, `text-blue-600`, …) when a semantic token exists or should be added.
+- If a new color or spacing meaning is required, **extend the token system** in the consumer’s globals / `design/tokens` (with team alignment) — do not one-off hex in JSX.
+- When the consumer provides a token lint script (e.g. `lint:tokens` / `scripts/lint-design-tokens.sh`), run it before claiming UI work done.
+
+## Design ↔ code bridge
+
+- Treat **Figma** (or equivalent) as the visual reference when the consumer documents a bridge (registry, Code Connect, node ids). Update or plan the documented node/reference when shipping UI.
+- **Forbidden:** paste design-tool **MCP / codegen reference JSX** verbatim into the portal. Re-implement with portal primitives, tokens, and i18n.
+- Do not treat throwaway exploration apps or unreproducible prototypes as SSOT.
+
+## Same PR (when UI changes)
+
+If the consumer repo maintains these files, update them in the **same PR** as the UI:
+
+- Route map / capability docs under `docs/specification/product/` when routes or surfaces change.
+- Pattern catalog when a new reusable pattern is introduced.
+- `docs/specification/as-built/` (inventory / implementation status) when UI ships or is deferred.
+- Design-bridge metadata (`figma_node`, registry row, etc.) when required by project-guidance.
+
+## Forbidden summary
+
+| Do not | Do instead |
+|--------|------------|
+| Raw hex / palette utilities for core UI | Semantic tokens (+ extend token files if needed) |
+| New primitive without change-control | Compose `components/ui` + domain components |
+| Figma/MCP paste as production code | Rebuild with portal patterns + tokens |
+| Screen with no route/pattern trail | Route map + pattern citation (or deferred) |
+| Hardcoded user-visible strings | Locale JSON |

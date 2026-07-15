@@ -27,6 +27,7 @@ These **`.mdc`** files govern **architectural patterns** for Next.js BFF portals
 | **`typescript-react-style.mdc`** | Strict TS, functional components, hooks, `"use client"` placement |
 | **`client-forms-patterns.mdc`** | Client forms, TanStack Query mutations |
 | **`tailwind-design-tokens.mdc`** | CSS variables, `components/ui` primitives |
+| **`design-system-agent-guardrails.mdc`** | UI composition — tokens only, no design-tool paste, same-PR product docs |
 | **`shared-limits-pagination.mdc`** | Pagination and limits via `@/lib/constants` |
 | **`no-hardcoded-strings.mdc`** | i18n — `data/locales/en/` |
 | **`workspace-page-layout.mdc`** | Authenticated page shell — header slot, content slot |

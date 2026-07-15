@@ -13,3 +13,5 @@ alwaysApply: true
 - Avoid `prose` for body text unless `@tailwindcss/typography` is configured to use the same tokens; prefer explicit `text-foreground` + link utilities (`text-accent`, underline) so typography stays on-brand.
 
 Portal **branding** (logos, portal-specific shell): `docs/project-guidance/branding.md`.
+
+Composition, same-PR docs, and design-tool paste bans: **`design-system-agent-guardrails.mdc`**.

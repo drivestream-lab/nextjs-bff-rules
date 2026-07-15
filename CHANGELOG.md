@@ -6,6 +6,26 @@ Format: **Breaking** changes require code changes in consumer repos before or al
 
 ---
 
+## v0.1.7
+
+### Summary
+
+Additive UI composition guardrails for agents — token discipline, compose-before-create, design↔code bridge, same-PR product docs.
+
+### Changes
+
+- **`design-system-agent-guardrails.mdc`** — new always-on rule for UI composition (no product-specific route/service names)
+- **`code-guidelines-index.mdc`** — index entry
+- **`tailwind-design-tokens.mdc`** — cross-link to guardrails
+
+### Migration guide
+
+- Submodule bump: `git checkout v0.1.7` in `.cursor/rules` (or pin `ref: v0.1.7` via harness when published)
+- No application code changes required; agents enforce composition on next UI edits
+- Optional: add consumer `docs/project-guidance` + `lint:tokens` to match the guardrails
+
+---
+
 ## v0.1.6
 
 ### Summary

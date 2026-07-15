@@ -11,7 +11,7 @@ each consumer repo under `docs/specification/`.
 | | |
 |---|---|
 | **License** | [MIT](LICENSE) |
-| **Version** | see [`VERSION`](VERSION) (currently **0.1.6**) · [CHANGELOG](CHANGELOG.md) |
+| **Version** | see [`VERSION`](VERSION) (currently **0.1.7**) · [CHANGELOG](CHANGELOG.md) |
 | **Mount path** | `.cursor/rules/` (git submodule) |
 | **Scaffold** | `nextjs-bff-foundation` — optional cookiecutter in your org |
 
@@ -33,6 +33,7 @@ nextjs-bff-rules/
   nextjs-repository-layout.mdc
   typescript-react-style.mdc
   tailwind-design-tokens.mdc
+  design-system-agent-guardrails.mdc
   client-forms-patterns.mdc
   workspace-page-layout.mdc
   no-hardcoded-strings.mdc
@@ -55,7 +56,7 @@ From the **consumer portal repo root**:
 rm -rf .cursor/rules
 
 git submodule add https://github.com/<org>/nextjs-bff-rules.git .cursor/rules
-cd .cursor/rules && git checkout v0.1.6 && cd ../..
+cd .cursor/rules && git checkout v0.1.7 && cd ../..
 
 git add .gitmodules .cursor/rules
 git commit -m "Add Next.js BFF Cursor rules at .cursor/rules (v0.1.6)"
