@@ -11,7 +11,7 @@ each consumer repo under `docs/specification/`.
 | | |
 |---|---|
 | **License** | [MIT](LICENSE) |
-| **Version** | see [`VERSION`](VERSION) (currently **0.1.6**) · [CHANGELOG](CHANGELOG.md) |
+| **Version** | see [`VERSION`](VERSION) (currently **0.1.7**) · [CHANGELOG](CHANGELOG.md) |
 | **Mount path** | `.cursor/rules/` (git submodule) |
 | **Scaffold** | `nextjs-bff-foundation` — optional cookiecutter in your org |
 
@@ -55,16 +55,20 @@ From the **consumer portal repo root**:
 rm -rf .cursor/rules
 
 git submodule add https://github.com/<org>/nextjs-bff-rules.git .cursor/rules
-cd .cursor/rules && git checkout v0.1.6 && cd ../..
+cd .cursor/rules && git checkout v0.1.7 && cd ../..
 
 git add .gitmodules .cursor/rules
-git commit -m "Add Next.js BFF Cursor rules at .cursor/rules (v0.1.6)"
+git commit -m "Add Next.js BFF Cursor rules at .cursor/rules (v0.1.7)"
 ```
 
 Cursor loads **`.cursor/rules/*.mdc`** automatically — no copy step.
 
 Greenfield portals may start from `nextjs-bff-foundation` in your org
 (`cookiecutter … --checkout v0.1.0`), then add the rules submodule as above.
+The scaffold may ship local `components/ui` + host tokens (no package pin).
+Once a portal **pins a design-system package**, that pin is L0/L1 SSOT —
+record the package, tag, and catalog in `docs/specification/` + an ADR;
+do not grow the local primitive tree. See `tailwind-design-tokens.mdc`.
 
 ---
 
@@ -82,10 +86,10 @@ scaffold — not in this constitution.
 ```bash
 cd .cursor/rules
 git fetch --tags
-git checkout v0.1.6    # target version
+git checkout v0.1.7    # target version
 cd ../..
 git add .cursor/rules
-git commit -m "Bump Next.js BFF rules to v0.1.6"
+git commit -m "Bump Next.js BFF rules to v0.1.7"
 ```
 
 Read [CHANGELOG](CHANGELOG.md) before every bump. **Breaking** releases require
@@ -125,8 +129,8 @@ consumer code changes before or alongside the submodule pointer update.
 4. PR → `develop` → `main`; tag and push:
 
 ```bash
-git tag v0.1.6
-git push origin v0.1.6
+git tag v0.1.7
+git push origin v0.1.7
 ```
 
 ---

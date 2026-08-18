@@ -6,6 +6,29 @@ Format: **Breaking** changes require code changes in consumer repos before or al
 
 ---
 
+## v0.1.7
+
+### Summary
+
+Portable L0/L1 consume modes — pinned design-system package **or** local `components/ui` / host tokens. RSC exception when a third-party UI barrel lacks `"use client"`.
+
+### Changes
+
+- **`tailwind-design-tokens.mdc`** — two-mode SSOT: package stylesheet + named L1 exports when pinned; otherwise host `app/globals.css` and `components/ui`. Fail closed on missing package export; no silent local fork.
+- **`nextjs-app-router-stack.mdc`** — styling and primitives follow the same two modes; pin/catalog stay in consumer spec + ADR.
+- **`nextjs-repository-layout.mdc`** — `components/ui` is the unpinned primitive home; remnant after a pin (do not extend).
+- **`typescript-react-style.mdc`** — host leaf wrapper (or smallest route entry) when a package barrel has no `"use client"`; do not copy L1 into `components/ui` to dodge RSC.
+- **`code-guidelines-index.mdc`**, **`documentation-project-guidance.mdc`**, **`README.md`** — pin/catalog belong in `docs/specification/`; scaffold vs consume.
+
+### Migration guide
+
+- Bump consumer submodule: `cd .cursor/rules && git fetch --tags && git checkout v0.1.7`
+- **Additive** for portals without a design-system pin — local `components/ui` + `globals.css` tokens remain valid.
+- Portals that **already pin** a package should treat remaining `components/ui` implementations as remnant (do not extend) and follow the RSC barrel exception instead of forking L1.
+- No application code is required by this bump alone.
+
+---
+
 ## v0.1.6
 
 ### Summary

@@ -1,15 +1,27 @@
 ---
-description: Use existing CSS variables and Tailwind token classes; reuse components/ui before new primitives; no ad hoc hex for core surfaces.
+description: Use semantic CSS tokens and Tailwind classes; L1 from a pinned design-system package when present, else components/ui; no ad hoc hex for core surfaces.
 globs: "**/*.tsx"
 alwaysApply: true
 ---
 
 # UI tokens and primitives
 
+Portals have **two modes**. Product docs (`docs/specification/` + ADR) record whether this portal **pins a design-system package**. Do not name a vendor package in these rules.
+
+## Tokens (L0)
+
 - Use design tokens already defined (e.g. `--background`, `--foreground`, `--primary`, `--accent`, `--surface`, `--muted`) and Tailwind classes wired to them (`bg-background`, `text-foreground`, etc.).
-- Do **not** introduce new raw hex/HSL for core layout surfaces unless extending the token system in `app/globals.css` with team alignment.
-- Do **not** use raw Tailwind palette utilities for component state. Use semantic tokens: `bg-success`, `bg-warning`, `bg-destructive`, `text-accent`, etc. If a new state color is needed, add a CSS variable in `app/globals.css` and wire it through `@theme inline`, then reference it via the corresponding utility class.
-- Prefer **`components/ui`** before adding new low-level primitives. Common section pattern: `Card` + `CardHeader` + `CardTitle` + `CardContent`.
-- Avoid `prose` for body text unless `@tailwindcss/typography` is configured to use the same tokens; prefer explicit `text-foreground` + link utilities (`text-accent`, underline) so typography stays on-brand.
+- Do **not** introduce new raw hex/HSL for core layout surfaces.
+- Do **not** use raw Tailwind palette utilities for component state. Use semantic tokens: `bg-success`, `bg-warning`, `bg-destructive`, `text-accent`, etc.
+- **Pinned package:** the package stylesheet is the runtime token SSOT. Do **not** add a competing `:root` / `@theme` token block in `app/globals.css`. New tokens or token changes belong in a **new package tag** (consumer pin bump), not a host fork.
+- **No pin:** extend the token system in `app/globals.css` (`:root` + `@theme inline`) with team alignment, then reference the corresponding utility class.
+
+## Primitives (L1)
+
+- Common section pattern: `Card` + `CardHeader` + `CardTitle` + `CardContent`.
+- **Pinned package:** import L1 named exports from the package. Do **not** add new low-level primitives under `components/ui`. Do **not** copy package components into the portal “for the ones we need.” Missing export → fail closed (documented L2+ exception or a new package tag) — never a silent local fork.
+- **No pin:** prefer **`components/ui`** before adding new low-level primitives.
+
+Avoid `prose` for body text unless `@tailwindcss/typography` is configured to use the same tokens; prefer explicit `text-foreground` + link utilities (`text-accent`, underline) so typography stays on-brand.
 
 Portal **branding** (logos, portal-specific shell): `docs/project-guidance/branding.md`.

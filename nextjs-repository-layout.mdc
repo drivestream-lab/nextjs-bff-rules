@@ -6,7 +6,7 @@ alwaysApply: true
 # Repository layout
 
 - **`app/`** — App Router pages, route groups (e.g. `(auth)`, `(dashboard)`), `layout.tsx`, `providers.tsx`, `globals.css`, and **`app/api/**`** Route Handlers (BFF).
-- **`components/`** — `ui/*` shared primitives; feature folders per product area.
+- **`components/`** — feature folders per product area. **`components/ui/*`** is the shared-primitive home **when the portal does not pin a design-system package**. After a pin, treat `components/ui` as remnant: do not extend it; delete or neutralize per the portal’s migration ADR. L2–L4 (patterns, shells, domain screens) stay in the portal.
 - **`lib/`** — `auth.ts`, `auth-fetch.ts`, `bff.ts`, `bff-logging.ts`, `constants.ts`, `env.ts`, `i18n.ts`, `jwt.ts`, `logging.ts`, `upstream-fetch.ts`, `utils.ts`.
 
 ## BFF route organization

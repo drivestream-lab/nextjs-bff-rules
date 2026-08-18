@@ -16,3 +16,12 @@ alwaysApply: true
 - Add `"use client"` at **leaf nodes** — the lowest component in the tree that actually needs client interactivity.
 - **Never** mark a layout, a data-fetching wrapper, or a route segment as `"use client"` — this collapses the entire subtree into a client bundle and loses RSC benefits.
 - If only a small part of a component needs interactivity, extract that part into a separate client component rather than marking the whole parent.
+
+### Third-party UI barrels without `"use client"`
+
+Some design-system packages ship a client-only barrel (hooks / `createContext`) **without** a `"use client"` directive. Importing that barrel from an RSC page or layout fails the Next.js build.
+
+- Prefer a **host leaf wrapper** (thin client module that re-exports or composes the package) so route files stay Server Components.
+- If a wrapper is not yet in place, mark the **smallest route entry** that imports the barrel — not the root layout and not a data-fetching wrapper.
+- Document the exception in the portal spec or ADR.
+- Do **not** copy package primitives into `components/ui` to dodge the RSC boundary.
