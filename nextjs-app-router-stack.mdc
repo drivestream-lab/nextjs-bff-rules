@@ -6,8 +6,8 @@ alwaysApply: true
 # Application stack
 
 - **Framework:** Next.js (App Router), React, TypeScript.
-- **Styling:** Tailwind CSS v4; tokens from `app/globals.css` (and shared design CSS where linked).
-- **UI primitives:** shadcn-style components under `components/ui` (Button, Input, Label, Card); Radix where already used.
+- **Styling:** Tailwind CSS v4. Token SSOT is the **pinned design-system package stylesheet** when the portal pins one; otherwise `app/globals.css` (and shared design CSS where linked). See `tailwind-design-tokens.mdc`.
+- **UI primitives:** named exports from the pinned design-system package when present; otherwise shadcn-style components under `components/ui` (Button, Input, Label, Card). Radix where already used. Package name, pin tag, and catalog live in `docs/specification/` + ADR — not in these rules.
 - **Server state on the client:** TanStack Query for data loaded from this app's **same-origin** `/api/*` routes.
 - **Server Components (RSC):** may call `lib/fetch-*.ts` helpers directly when data is needed for SSR and no client interactivity follows from the same data. Do not mix RSC direct fetch and TanStack Query for the same data in the same feature — pick one per data flow.
 - **Upstream APIs:** Browser code must **not** call upstream services directly; use the Next.js BFF (Route Handlers). See `nextjs-bff-server-auth.mdc`.

@@ -7,7 +7,9 @@ alwaysApply: true
 
 These **`.mdc`** files govern **architectural patterns** for Next.js BFF portals. They live in the **`nextjs-bff-rules`** repository and are consumed via a **git submodule** at each portal repo's **`.cursor/rules/`** (this directory when mounted).
 
-**Product-specific** requirements, upstream service maps, route catalogs, ADRs, and feature trackers belong in each portal repo under **`docs/specification/`**, **`docs/project-guidance/`**, and **README** — not in this package.
+**Product-specific** requirements, upstream service maps, route catalogs, ADRs, feature trackers, and **design-system package pin / catalog** belong in each portal repo under **`docs/specification/`**, **`docs/project-guidance/`**, and **README** — not in this package.
+
+L0 tokens and L1 primitives are either a **pinned design-system package** or local **`components/ui`** + host `app/globals.css` — see `tailwind-design-tokens.mdc` and `nextjs-app-router-stack.mdc`.
 
 ## Process rules (this package)
 
@@ -26,7 +28,7 @@ These **`.mdc`** files govern **architectural patterns** for Next.js BFF portals
 | **`nextjs-repository-layout.mdc`** | `app/`, `components/`, `lib/`; BFF by upstream service |
 | **`typescript-react-style.mdc`** | Strict TS, functional components, hooks, `"use client"` placement |
 | **`client-forms-patterns.mdc`** | Client forms, TanStack Query mutations |
-| **`tailwind-design-tokens.mdc`** | CSS variables, `components/ui` primitives |
+| **`tailwind-design-tokens.mdc`** | CSS variables; L1 from pinned package or `components/ui` |
 | **`shared-limits-pagination.mdc`** | Pagination and limits via `@/lib/constants` |
 | **`no-hardcoded-strings.mdc`** | i18n — `data/locales/en/` |
 | **`workspace-page-layout.mdc`** | Authenticated page shell — header slot, content slot |
